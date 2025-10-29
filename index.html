@@ -71,7 +71,7 @@
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      msg.textContent = 'Stuur...';
+      msg.textContent = 'Sending...';
 
       const data = {
         firstname: form.firstname.value.trim(),
@@ -91,7 +91,7 @@
             body: JSON.stringify(data)
           });
           if (res.ok) {
-            msg.textContent = 'Dankie — jou data is gestoor.';
+            msg.textContent = 'Thank you — Your Information have been stored.';
             form.reset();
             return;
           } else {
