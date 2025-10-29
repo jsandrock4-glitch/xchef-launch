@@ -1,130 +1,126 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>XCHEF Registration</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XCHEF Bonus Coins Subscription</title>
   <style>
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;margin:0;background:linear-gradient(135deg,#ff7a18,#ff3a6b);color:#fff;display:flex;align-items:center;justify-content:center;min-height:100vh}
-    .card{background:rgba(255,255,255,0.06);backdrop-filter:blur(6px);padding:24px;border-radius:12px;max-width:480px;width:95%}
-    h1{margin:0 0 8px;font-size:20px;text-align:center}
-    p.subtitle{opacity:0.95;margin:0 0 16px;text-align:center}
-    label{display:block;font-size:13px;margin:12px 0 6px}
-    input,select{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.04);color:#fff}
-    .row{display:flex;gap:8px}
-    .row > *{flex:1}
-    .btn{margin-top:16px;padding:12px;width:100%;border-radius:10px;border:0;background:#fff;color:#111;font-weight:700;cursor:pointer}
-    .msg{margin-top:12px;font-size:14px}
-    small{opacity:0.9}
-    a.link{color:#fff;text-decoration:underline}
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f9fa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    h1 {
+      color: #ff4c00;
+    }
+    form {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    input, select, button {
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    button {
+      background: #ff4c00;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #e04300;
+    }
+    #statusMessage {
+      margin-top: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Be part of the Founders Circle</h1>
-    <p class="subtitle">Subscribe to recieve xchefbonuscoins on Launch day-Come and join the circle.</p>
 
-    <form id="regForm">
-      <label for="firstname">Name</label>
-      <input id="firstname" name="firstname" placeholder="Jan-Lucas" required>
+  <h1>XCHEF Bonus Coins Subscription</h1>
 
-      <label for="lastname">Surname</label>
-      <input id="lastname" name="lastname" placeholder="Sandrock" required>
+  <form id="subscriptionForm">
+    <input type="text" name="firstname" placeholder="First Name" required>
+    <input type="text" name="lastname" placeholder="Last Name" required>
+    
+    <select name="province" required>
+      <option value="">Select Province</option>
+      <option value="Gauteng">Gauteng</option>
+      <option value="KwaZulu-Natal">KwaZulu-Natal</option>
+      <option value="Western Cape">Western Cape</option>
+      <option value="Eastern Cape">Eastern Cape</option>
+      <option value="Limpopo">Limpopo</option>
+      <option value="Mpumalanga">Mpumalanga</option>
+      <option value="North West">North West</option>
+      <option value="Free State">Free State</option>
+      <option value="Northern Cape">Northern Cape</option>
+    </select>
 
-      <label for="province">Province</label>
-      <select id="province" name="province" required>
-        <option value="">Choose a province...</option>
-        <option>Western Cape</option>
-        <option>Eastern Cape</option>
-        <option>KwaZulu-Natal</option>
-        <option>Gauteng</option>
-        <option>Free State</option>
-        <option>Limpopo</option>
-        <option>Mpumalanga</option>
-        <option>Northern Cape</option>
-        <option>North West</option>
-      </select>
+    <input type="tel" name="cell" placeholder="+27 82 123 4567" 
+           pattern="[0-9\s+()\-]{7,20}" required>
+    <input type="text" name="wallet" placeholder="Wallet Address" required>
 
-      <label for="cell">Mobile Number</label>
-      <input id="cell" name="cell" placeholder="082 767 7256" pattern="[0-9\s()\+-]{7,20}" required>
+    <button type="submit">Subscribe</button>
+  </form>
 
-      <label for="wallet">Wallet address (for recieving xchefbonuscoins)</label>
-      <input id="wallet" name="wallet" placeholder="0x..." >
-
-      <button class="btn" type="submit">Submit</button>
-    </form>
-
-    <div class="msg" id="message"></div>
-
-    <hr style="margin:16px 0;border:none;border-top:1px solid rgba(255,255,255,0.06)">
-    <small>How do we store your information? your information automatically send to google sheets database with macros activated and can only be accesed by the founder.</small>
-  </div>
+  <p id="statusMessage"></p>
 
   <script>
-    // === CONFIG ===
-    // Replace WEBHOOK_URL with your endpoint (Google Apps Script web app URL or Formspree/Airtable endpoint)
-    const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyxeCXU8HnoRIza5gzyHAgTqv6h3AkQF1h83LO1O0usckgJi5OhVItg00JiTvPMayVe/exec";
-    // =================
-
-    const form = document.getElementById('regForm');
-    const msg = document.getElementById('message');
+    const form = document.getElementById('subscriptionForm');
+    const status = document.getElementById('statusMessage');
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      msg.textContent = 'Sending...';
 
-      const data = {
+      const formData = {
+        ts: new Date().toISOString(),
         firstname: form.firstname.value.trim(),
         lastname: form.lastname.value.trim(),
         province: form.province.value,
         cell: form.cell.value.trim(),
-        wallet: form.wallet.value.trim(),
-        ts: new Date().toISOString()
+        wallet: form.wallet.value.trim()
       };
 
-      // 1) Try to POST to your serverless endpoint (replace WEBHOOK_URL above)
-      if (WEBHOOK_URL && WEBHOOK_URL !== "") {
-        try {
-          const res = await fetch(WEBHOOK_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-          });
-          if (res.ok) {
-            msg.textContent = 'Thank you — Your Information have been stored.';
-            form.reset();
-            return;
-          } else {
-            const text = await res.text();
-            console.warn('Server error:', text);
-            msg.textContent = 'Server error. Data will be stored locally.';
+      try {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbyxeCXU8HnoRIza5gzyHAgTqv6h3AkQF1h83LO1O0usckgJi5OhVItg00JiTvPMayVe/exec', {
+          method: 'POST',
+          body: JSON.stringify(formData),
+          headers: {
+            'Content-Type': 'application/json'
           }
-        } catch (err) {
-          console.warn('Post failed', err);
-          msg.textContent = 'Connection error. Data will be stored locally.';
+        });
+
+        const result = await response.json();
+
+        if (result.status === 'success') {
+          status.textContent = "Subscription successful! 🎉";
+          status.style.color = "green";
+          form.reset();
+        } else {
+          status.textContent = "Error: " + (result.message || "Please try again");
+          status.style.color = "red";
         }
+      } catch (error) {
+        console.error(error);
+        status.textContent = "Error: Could not connect to server.";
+        status.style.color = "red";
       }
-
-      // 2) Fallback: save locally in browser so you can test (not shared)
-      let local = JSON.parse(localStorage.getItem('xchef_regs') || '[]');
-      local.push(data);
-      localStorage.setItem('xchef_regs', JSON.stringify(local));
-      msg.textContent = 'Saved in your browser’s local storage. (Production: replace WEBHOOK_URL)';
-      form.reset();
     });
-
-    // Helper: allow easy export of localStorage entries to CSV by visiting /?export=1
-    if (location.search.includes('export=1')) {
-      const rows = JSON.parse(localStorage.getItem('xchef_regs') || '[]');
-      if (rows.length === 0) { document.body.innerHTML = '<pre>No local registrations found.</pre>'; }
-      else {
-        const keys = Object.keys(rows[0]);
-        const csv = [keys.join(',')].concat(rows.map(r => keys.map(k => '"' + (r[k] || '').toString().replace(/"/g,'""') + '"').join(','))).join('\n');
-        const blob = new Blob([csv], {type: 'text/csv'});
-        const url = URL.createObjectURL(blob);
-        document.body.innerHTML = '<a href="'+url+'" download="xchef_regs.csv">Download registrations (CSV)</a>';
-      }
-    }
   </script>
 </body>
 </html>
