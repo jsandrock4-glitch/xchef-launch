@@ -97,11 +97,11 @@
           } else {
             const text = await res.text();
             console.warn('Server error:', text);
-            msg.textContent = 'Bediener fout. Data sal plaaslik gestoor word.';
+            msg.textContent = 'Server error. Data will be stored locally.';
           }
         } catch (err) {
           console.warn('Post failed', err);
-          msg.textContent = 'Koppelingsfout. Data sal plaaslik gestoor word.';
+          msg.textContent = 'Connection error. Data will be stored locally.';
         }
       }
 
@@ -109,7 +109,7 @@
       let local = JSON.parse(localStorage.getItem('xchef_regs') || '[]');
       local.push(data);
       localStorage.setItem('xchef_regs', JSON.stringify(local));
-      msg.textContent = 'Gestoor in jou blaaier se lokaal. (Production: replace WEBHOOK_URL)';
+      msg.textContent = 'Saved in your browser’s local storage. (Production: replace WEBHOOK_URL)';
       form.reset();
     });
 
