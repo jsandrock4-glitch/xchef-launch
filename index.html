@@ -182,11 +182,11 @@
       status.style.color = "black";
 
       try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbxl3oPBWgLVxxSKiDT50aCEExUJz2j4PKSMDBORKH2zjNgA12qJA1UDoK3jeEibowHc/exec', {
-          method: 'POST',
-          body: JSON.stringify(formData),
-          headers: {'Content-Type': 'application/json'}
-        });
+        const response = await fetch("https://formspree.io/f/YOUR_FORMSPREE_ID", {
+  method: "POST",
+  body: new FormData(formElement),
+  headers: { "Accept": "application/json" },
+});
 
         const result = await response.json();
 
